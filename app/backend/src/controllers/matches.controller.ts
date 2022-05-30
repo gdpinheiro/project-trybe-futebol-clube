@@ -65,14 +65,14 @@ class MatchesController {
 
   public addMatch = async (req: Request, res: Response) => {
     if (req.body.homeTeam === req.body.awayTeam) {
-      return res.status(401).json({ message: 'Teams cannot be the same' });
+      return res.status(401).json({
+        message: 'It is not possible to create a match with two equal teams' });
     }
     const [homeTeam, awayTeam] = await Promise.all([
       Teams.findOne({ where: { id: req.body.homeTeam } }),
-      Teams.findOne({ where: { id: req.body.awayTeam } }),
-    ]);
+      Teams.findOne({ where: { id: req.body.awayTeam } })]);
     if (!homeTeam || !awayTeam) {
-      return res.status(404).json({ message: 'One or both of the teams does not exist' });
+      return res.status(404).json({ message: 'There is no team with such id!' });
     }
     const match = await this.match.create({
       homeTeam: req.body.homeTeam,
