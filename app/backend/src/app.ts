@@ -4,12 +4,11 @@ import * as bodyParser from 'body-parser';
 import LoginController from './controllers/login.controller';
 import TeamsController from './controllers/teams.controller';
 import MatchesController from './controllers/matches.controller';
-// import LeaderboardController from './controllers/leaderboard.controller';
+import LeaderboardController from './controllers/leaderboard.controller';
 
 const loginController = new LoginController();
 const teamsController = new TeamsController();
 const matchesController = new MatchesController();
-// const leaderboardController = new LeaderboardController();
 
 class App {
   public app: express.Express;
@@ -36,8 +35,8 @@ class App {
     this.app.post('/matches', matchesController.addMatch);
     this.app.patch('/matches/:id', matchesController.updateMatch);
     this.app.patch('/matches/:id/finish', matchesController.endMatch);
-    // this.app.get('/leaderboard/home', LeaderboardController.getHomeLeaderboard);
-    // this.app.get('/leaderboard/away', LeaderboardController.getAwayLeaderboard);
+    this.app.get('/leaderboard/home', LeaderboardController.getLeaderboardHome);
+    // this.app.get('/leaderboard/away', LeaderboardController.getLeaderboardAway);
     // this.app.get('/leaderboard', LeaderboardController.getLeaderboard);
   }
 
