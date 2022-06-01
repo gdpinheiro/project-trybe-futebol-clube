@@ -78,7 +78,7 @@ class LeaderboardController {
     return { ...goals, goalsBalance: goals.goalsFavor - goals.goalsOwn };
   }
 
-  public static reduceLeaderboardHome(matches: Matches[], teams: Teams[]) {
+  public static mapLeaderboardHome(matches: Matches[], teams: Teams[]) {
     const leaderboard = teams.map((team: Teams) => {
       const teamMatches = matches.filter(
         (match: Matches) => match.homeTeam === team.id && !match.inProgress,
@@ -102,7 +102,7 @@ class LeaderboardController {
   public static async getLeaderboardHome(req: Request, res: Response) {
     const matches = await Matches.findAll();
     const teams = await Teams.findAll();
-    const leaderboardHome = LeaderboardController.reduceLeaderboardHome(
+    const leaderboardHome = LeaderboardController.mapLeaderboardHome(
       matches,
       teams,
     );
