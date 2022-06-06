@@ -22,8 +22,7 @@ class App {
     const accessControl: express.RequestHandler = (_req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS,PUT,PATCH');
-      res.header('Access-Control-Allow-Headers', '*');
-      next();
+      res.header('Access-Control-Allow-Headers', '*'); next();
     };
     this.app.use(accessControl);
     this.app.use(bodyParser.json());
@@ -37,7 +36,7 @@ class App {
     this.app.patch('/matches/:id/finish', matchesController.endMatch);
     this.app.get('/leaderboard/home', LeaderboardController.getLeaderboardHome);
     this.app.get('/leaderboard/away', LeaderboardController.getLeaderboardAway);
-    // this.app.get('/leaderboard', LeaderboardController.getLeaderboard);
+    this.app.get('/leaderboard', LeaderboardController.getLeaderboard);
   }
 
   public start(PORT: string | number): void {

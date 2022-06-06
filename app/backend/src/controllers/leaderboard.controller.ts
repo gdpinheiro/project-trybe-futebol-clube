@@ -145,5 +145,38 @@ class LeaderboardController {
     );
     return res.status(200).json(sortedLeaderboard);
   }
+
+  public static mapLeaderboard(matches: Matches[], teams: Teams[]) {
+    const leaderboard = teams.map((team: Teams) => {
+      const teamMatches = matches.filter((match: Matches) => (match.homeTeam === team.id
+        || match.awayTeam === team.id) && !match.inProgress);
+      const goals = LeaderboardController.reduceGoals(teamMatches, team);
+      const victories = LeaderboardController.reduceVictories(teamMatches, team);
+      const finalObject = {
+        name: team.teamName,
+        totalGames: teamMatches.length,
+        ...goals,
+        ...victories,
+        efficiency: ((victories.totalPoints / (teamMatches.length * 3)) * 100).toFixed(2) };
+      if (Number(finalObject.efficiency) % 1 === 0) {
+        finalObject.efficiency = Number(finalObject.efficiency).toFixed(0);
+      }
+      return finalObject;
+    });
+    return leaderboard;
+  }
+
+  public static async getLeaderboard(req: Request, res: Response) {
+    const matches = await Matches.findAll();
+    const teams = await Teams.findAll();
+    const leaderboard = LeaderboardController.mapLeaderboard(matches, teams);
+    const sortedLeaderboard = leaderboard.sort((a, b) => {
+      if (b.totalPoints === a.totalPoints) {
+        return b.goalsBalance - a.goalsBalance;
+      }
+      return b.totalPoints - a.totalPoints;
+    });
+    return res.status(200).json(sortedLeaderboard);
+  }
 }
 export default LeaderboardController;
