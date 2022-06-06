@@ -36,7 +36,7 @@ class App {
     this.app.patch('/matches/:id', matchesController.updateMatch);
     this.app.patch('/matches/:id/finish', matchesController.endMatch);
     this.app.get('/leaderboard/home', LeaderboardController.getLeaderboardHome);
-    // this.app.get('/leaderboard/away', LeaderboardController.getLeaderboardAway);
+    this.app.get('/leaderboard/away', LeaderboardController.getLeaderboardAway);
     // this.app.get('/leaderboard', LeaderboardController.getLeaderboard);
   }
 
